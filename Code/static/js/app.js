@@ -1,18 +1,15 @@
 // from data.js
 var tableData = data;
 
-// YOUR CODE HERE!
+
 console.log("app.js is working")
 
-var table = document.getElementById("ufo-table");
+var table = document.getElementById("tb");
 
-var search = document.getElementById("datetime").value
-console.log(search)
-for (var i = 0; i < data.length; i++){
+for (var i = 0; i < tableData.length; i++){
   var row = table.insertRow(-1);
   var k = 0
-  var col = data[i]
-  console.log(i)
+  var col = tableData[i]
   for (var key in col){
     var cell = row.insertCell(k);
     k++;
@@ -20,20 +17,51 @@ for (var i = 0; i < data.length; i++){
     // console.log(key + " : " + col[key])
   }
 }
-
 function searchbox() {
-  var search = document.getElementById("datetime").value.toUpperCase();
-  var table = document.getElementById("ufo-table");
-  var tr = table.getElementsByTagName("tr");
-  for (var i = 0; i < tr.length; i++) {
-    var td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      var txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(search) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
+
+  tbody = document.getElementById("tb");
+  tbody.innerHTML = "";
+
+  var searchItems = {
+    datetime: document.getElementById("datetime").value,
+    city: document.getElementById("cityname").value,
+    state: document.getElementById("state").value,
+    country: document.getElementById("country").value,
+    shape: document.getElementById("shape").value
+  };
+
+  for (key in searchItems){
+    if (!searchItems[key]) {
+      delete searchItems[key];
+    };
+  };
+
+  console.log(searchItems)
+
+  searchedTable = tableData.filter(function(item) {
+    for (var key in searchItems) {
+      if (item[key] === undefined || item[key].toUpperCase() != searchItems[key].toUpperCase()) {
+        return false; 
       }
+      console.log(item[key])
+    }
+      return true;
+  });
+  
+  console.log(searchedTable)
+
+  var table = document.getElementById("tb");
+
+  for (var i = 0; i < searchedTable.length; i++){
+    var row = table.insertRow(-1);
+    var k = 0
+    var col = searchedTable[i]
+    for (var key in col){
+      var cell = row.insertCell(k);
+      k++;
+      cell.innerHTML = col[key];
+      // console.log(key + " : " + col[key])
     }
   }
+
 }
